@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Missions & Challenges - Digital Guardian</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/neon-theme.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            padding-top: 80px;
+            background: #0a0a0a;
+            color: #ffffff;
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        .missions-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .page-header h1 {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            color: #00ffff;
+            margin-bottom: 1rem;
+            text-shadow: 0 0 20px #00ffff;
+        }
+        
+        .missions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .mission-card-large {
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 0, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .mission-card-large:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            transform: translateY(-5px);
+        }
+        
+        .mission-header-large {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .mission-icon-large {
+            font-size: 3rem;
+            color: #00ff00;
+        }
+        
+        .mission-points-large {
+            background: #00ff00;
+            color: #0a0a0a;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+        }
+        
+        .mission-card-large h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .mission-card-large p {
+            color: #b0b0b0;
+            margin-bottom: 1.5rem;
+        }
+        
+        .game-container {
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-top: 2rem;
+            display: none;
+        }
+        
+        .game-container.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        .game-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .game-header h2 {
+            color: #00ffff;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .phishing-email {
+            background: #2a2a2a;
+            border: 2px solid rgba(255, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .phishing-email:hover {
+            border-color: #ff0000;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+        }
+        
+        .phishing-email.safe {
+            border-color: rgba(0, 255, 0, 0.3);
+        }
+        
+        .phishing-email.safe:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+        
+        .email-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        
+        .email-from {
+            font-weight: 600;
+            color: #00ffff;
+        }
+        
+        .email-subject {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+        
+        .email-body {
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+        
+        .game-result {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .game-result.correct {
+            background: rgba(0, 255, 0, 0.2);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+        }
+        
+        .game-result.incorrect {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0000;
+            color: #ff0000;
+        }
+        
+        .quiz-container {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .quiz-question {
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 15px;
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .password-input:focus {
+            outline: none;
+            border-color: #00ffff;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+        }
+        
+        .password-strength {
+            height: 10px;
+            background: #1a1a2e;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+        }
+        
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+        
+        .strength-bar.weak {
+            background: #ff0000;
+            width: 33%;
+        }
+        
+        .strength-bar.medium {
+            background: #ffff00;
+            width: 66%;
+        }
+        
+        .strength-bar.strong {
+            background: #00ff00;
+            width: 100%;
+        }
+        
+        .strength-text {
+            text-align: center;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .strength-text.weak {
+            color: #ff0000;
+        }
+        
+        .strength-text.medium {
+            color: #ffff00;
+        }
+        
+        .strength-text.strong {
+            color: #00ff00;
+        }
+        
+        .mcq-options {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .mcq-option {
+            background: #1a1a2e;
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .mcq-option:hover {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        
+        .mcq-option.selected {
+            border-color: #00ffff;
+            background: rgba(0, 255, 255, 0.2);
+        }
+        
+        .mcq-option.correct {
+            border-color: #00ff00;
+            background: rgba(0, 255, 0, 0.2);
+        }
+        
+        .mcq-option.incorrect {
+            border-color: #ff0000;
+            background: rgba(255, 0, 0, 0.2);
+        }
+        
+        .game-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        .btn-game {
+            padding: 12px 30px;
+            border: 2px solid #00ffff;
+            background: transparent;
+            color: #00ffff;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn-game:hover {
+            background: #00ffff;
+            color: #0a0a0a;
+            box-shadow: 0 0 20px #00ffff;
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 100px;
+            left: 20px;
+            background: rgba(0, 255, 255, 0.2);
+            border: 1px solid #00ffff;
+            color: #00ffff;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        
+        .back-btn:hover {
+            background: rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #00ff00;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>Digital Guardian</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="community.html" class="nav-link">Community</a>
+                <a href="missions.html" class="nav-link active">Missions</a>
+                <a href="learning.html" class="nav-link">Learning</a>
+            </div>
+            <div class="nav-auth">
+                <div id="user-profile" class="user-info">
+                    <span id="user-avatar-display" class="user-avatar">🛡️</span>
+                    <span id="user-name-display" class="user-name">Digital Guardian</span>
+                    <span id="user-points" class="user-points">0 XP</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Home
+    </a>
+
+    <div class="missions-container">
+        <div class="page-header">
+            <h1 class="neon-text">Weekly Missions & Challenges</h1>
+            <p>Level up your cybersecurity skills through interactive games and challenges</p>
+        </div>
+
+        <div class="score-display">
+            <i class="fas fa-trophy"></i> Your Score: <span id="total-score">0</span> XP
+        </div>
+
+        <div class="missions-grid">
+            <!-- Phishing Detective Mission -->
+            <div class="mission-card-large" onclick="startPhishingGame()">
+                <div class="mission-header-large">
+                    <div class="mission-icon-large">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <span class="mission-points-large">+150 XP</span>
+                </div>
+                <h3>Phishing Detective</h3>
+                <p>Test your ability to spot fake emails and phishing attempts. Can you identify the scams?</p>
+                <div class="mission-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="phishing-progress" style="width: 0%;"></div>
+                    </div>
+                    <span id="phishing-status">Not Started</span>
+                </div>
+            </div>
+
+            <!-- Password Strength Checker -->
+            <div class="mission-card-large" onclick="startPasswordGame()">
+                <div class="mission-header-large">
+                    <div class="mission-icon-large">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <span class="mission-points-large">+100 XP</span>
+                </div>
+                <h3>Password Strength Master</h3>
+                <p>Learn what makes a password strong. Test passwords and learn best practices.</p>
+                <div class="mission-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="password-progress" style="width: 0%;"></div>
+                    </div>
+                    <span id="password-status">Not Started</span>
+                </div>
+            </div>
+
+            <!-- Cybersecurity MCQ -->
+            <div class="mission-card-large" onclick="startMCQGame()">
+                <div class="mission-header-large">
+                    <div class="mission-icon-large">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <span class="mission-points-large">+200 XP</span>
+                </div>
+                <h3>Cybersecurity Quiz</h3>
+                <p>Test your knowledge with multiple choice questions about digital safety and security.</p>
+                <div class="mission-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="mcq-progress" style="width: 0%;"></div>
+                    </div>
+                    <span id="mcq-status">Not Started</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Phishing Game -->
+        <div class="game-container" id="phishing-game">
+            <div class="game-header">
+                <h2><i class="fas fa-envelope"></i> Phishing Detective</h2>
+                <p>Click on emails that look suspicious (phishing attempts). Leave safe emails alone.</p>
+            </div>
+            <div id="phishing-emails"></div>
+            <div class="game-result" id="phishing-result"></div>
+            <div class="game-actions">
+                <button class="btn-game" onclick="checkPhishingAnswers()">Check Answers</button>
+                <button class="btn-game" onclick="closeGame('phishing-game')">Close</button>
+            </div>
+        </div>
+
+        <!-- Password Game -->
+        <div class="game-container" id="password-game">
+            <div class="game-header">
+                <h2><i class="fas fa-key"></i> Password Strength Master</h2>
+                <p>Type passwords to see their strength. Learn what makes a password secure!</p>
+            </div>
+            <div class="quiz-container">
+                <input type="text" class="password-input" id="password-input" placeholder="Type a password to test...">
+                <div class="password-strength">
+                    <div class="strength-bar" id="strength-bar"></div>
+                </div>
+                <div class="strength-text" id="strength-text">Enter a password</div>
+                <div id="password-tips"></div>
+            </div>
+            <div class="game-actions">
+                <button class="btn-game" onclick="completePasswordMission()">Complete Mission</button>
+                <button class="btn-game" onclick="closeGame('password-game')">Close</button>
+            </div>
+        </div>
+
+        <!-- MCQ Game -->
+        <div class="game-container" id="mcq-game">
+            <div class="game-header">
+                <h2><i class="fas fa-question-circle"></i> Cybersecurity Quiz</h2>
+                <p>Answer the questions correctly to earn points!</p>
+            </div>
+            <div id="mcq-questions"></div>
+            <div class="game-result" id="mcq-result"></div>
+            <div class="game-actions">
+                <button class="btn-game" onclick="checkMCQAnswers()">Submit Answers</button>
+                <button class="btn-game" onclick="closeGame('mcq-game')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load user data
+        function loadUserData() {
+            const userData = localStorage.getItem('digitalGuardianUser');
+            if (userData) {
+                const user = JSON.parse(userData);
+                document.getElementById('user-avatar-display').textContent = getAvatarIcon(user.avatar);
+                document.getElementById('user-name-display').textContent = user.name;
+                document.getElementById('user-points').textContent = `${user.points || 0} XP`;
+                document.getElementById('total-score').textContent = user.points || 0;
+            }
+        }
+
+        function getAvatarIcon(avatar) {
+            const map = {
+                'avatar1': '🛡️', 'avatar2': '⚔️', 'avatar3': '🥷', 'avatar4': '💻',
+                'avatar5': '🔒', 'avatar6': '🌐', 'avatar7': '🔐', 'avatar8': '🛡️',
+                'avatar9': '⚡', 'avatar10': '🦸', 'avatar11': '👩‍💻', 'avatar12': '👑'
+            };
+            return map[avatar] || '🛡️';
+        }
+
+        function updatePoints(points) {
+            const userData = localStorage.getItem('digitalGuardianUser');
+            if (userData) {
+                const user = JSON.parse(userData);
+                user.points = (user.points || 0) + points;
+                user.level = Math.floor(user.points / 100) + 1;
+                localStorage.setItem('digitalGuardianUser', JSON.stringify(user));
+                document.getElementById('user-points').textContent = `${user.points} XP`;
+                document.getElementById('total-score').textContent = user.points;
+            }
+        }
+
+        // Phishing Game
+        const phishingEmails = [
+            {
+                from: 'security@bank-verify.com',
+                subject: 'URGENT: Verify Your Account Now!',
+                body: 'Your account will be suspended in 24 hours. Click here immediately to verify: http://fake-bank-login.com',
+                isPhishing: true
+            },
+            {
+                from: 'noreply@amazon.com',
+                subject: 'Your Order #12345 Has Shipped',
+                body: 'Your recent order has been shipped. Track your package at amazon.com/tracking',
+                isPhishing: false
+            },
+            {
+                from: 'paypal-security@paypal-secure.net',
+                subject: 'Account Limited - Action Required',
+                body: 'We detected suspicious activity. Verify your identity now: http://paypal-verify.net/login',
+                isPhishing: true
+            },
+            {
+                from: 'updates@github.com',
+                subject: 'New security feature available',
+                body: 'We\'ve added two-factor authentication. Enable it in your account settings at github.com',
+                isPhishing: false
+            }
+        ];
+
+        let selectedPhishingEmails = [];
+
+        function startPhishingGame() {
+            document.getElementById('phishing-game').classList.add('active');
+            const container = document.getElementById('phishing-emails');
+            container.innerHTML = '';
+            selectedPhishingEmails = [];
+
+            phishingEmails.forEach((email, index) => {
+                const emailDiv = document.createElement('div');
+                emailDiv.className = 'phishing-email';
+                emailDiv.dataset.index = index;
+                emailDiv.onclick = () => togglePhishingEmail(emailDiv, index);
+                emailDiv.innerHTML = `
+                    <div class="email-header">
+                        <div class="email-from">From: ${email.from}</div>
+                    </div>
+                    <div class="email-subject">Subject: ${email.subject}</div>
+                    <div class="email-body">${email.body}</div>
+                `;
+                container.appendChild(emailDiv);
+            });
+        }
+
+        function togglePhishingEmail(element, index) {
+            if (selectedPhishingEmails.includes(index)) {
+                selectedPhishingEmails = selectedPhishingEmails.filter(i => i !== index);
+                element.classList.remove('selected');
+            } else {
+                selectedPhishingEmails.push(index);
+                element.classList.add('selected');
+            }
+        }
+
+        function checkPhishingAnswers() {
+            const correct = phishingEmails
+                .map((email, index) => email.isPhishing === selectedPhishingEmails.includes(index))
+                .every(x => x);
+
+            const result = document.getElementById('phishing-result');
+            if (correct) {
+                result.className = 'game-result correct';
+                result.innerHTML = '<i class="fas fa-check-circle"></i> Excellent! You identified all phishing emails correctly! +150 XP';
+                updatePoints(150);
+                updateProgress('phishing', 100);
+            } else {
+                result.className = 'game-result incorrect';
+                result.innerHTML = '<i class="fas fa-times-circle"></i> Not quite right. Review the emails and try again!';
+            }
+            result.style.display = 'block';
+        }
+
+        // Password Game
+        function startPasswordGame() {
+            document.getElementById('password-game').classList.add('active');
+            const input = document.getElementById('password-input');
+            input.addEventListener('input', checkPasswordStrength);
+        }
+
+        function checkPasswordStrength() {
+            const password = document.getElementById('password-input').value;
+            const strengthBar = document.getElementById('strength-bar');
+            const strengthText = document.getElementById('strength-text');
+            const tipsDiv = document.getElementById('password-tips');
+
+            let strength = 0;
+            let tips = [];
+
+            if (password.length >= 8) strength++;
+            else tips.push('Use at least 8 characters');
+
+            if (password.length >= 12) strength++;
+            if (/[a-z]/.test(password)) strength++;
+            else tips.push('Add lowercase letters');
+            if (/[A-Z]/.test(password)) strength++;
+            else tips.push('Add uppercase letters');
+            if (/[0-9]/.test(password)) strength++;
+            else tips.push('Add numbers');
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else tips.push('Add special characters (!@#$%^&*)');
+
+            strengthBar.className = 'strength-bar';
+            strengthText.className = 'strength-text';
+
+            if (strength <= 2) {
+                strengthBar.classList.add('weak');
+                strengthText.textContent = 'Weak Password';
+                strengthText.classList.add('weak');
+            } else if (strength <= 4) {
+                strengthBar.classList.add('medium');
+                strengthText.textContent = 'Medium Password';
+                strengthText.classList.add('medium');
+            } else {
+                strengthBar.classList.add('strong');
+                strengthText.textContent = 'Strong Password!';
+                strengthText.classList.add('strong');
+            }
+
+            tipsDiv.innerHTML = tips.length > 0 ? '<p style="color: #b0b0b0; font-size: 0.9rem;">Tips: ' + tips.join(', ') + '</p>' : '<p style="color: #00ff00;">Great password!</p>';
+        }
+
+        function completePasswordMission() {
+            const password = document.getElementById('password-input').value;
+            if (password.length > 0) {
+                updatePoints(100);
+                updateProgress('password', 100);
+                alert('Mission completed! +100 XP. You learned about password strength!');
+                closeGame('password-game');
+            }
+        }
+
+        // MCQ Game
+        const mcqQuestions = [
+            {
+                question: 'What is the best practice for passwords?',
+                options: ['Use the same password everywhere', 'Use long, unique passwords for each account', 'Write passwords on sticky notes', 'Share passwords with friends'],
+                correct: 1
+            },
+            {
+                question: 'What should you do if you receive a suspicious email?',
+                options: ['Click all links to verify', 'Delete it immediately without opening', 'Forward it to friends', 'Reply asking for more info'],
+                correct: 1
+            },
+            {
+                question: 'What is two-factor authentication (2FA)?',
+                options: ['Using two passwords', 'An extra layer of security requiring two forms of verification', 'Having two accounts', 'Using two devices'],
+                correct: 1
+            },
+            {
+                question: 'When is it safe to use public WiFi?',
+                options: ['Always, it\'s free', 'Only for non-sensitive browsing', 'Never use public WiFi', 'Only when using a VPN'],
+                correct: 3
+            }
+        ];
+
+        let mcqAnswers = {};
+
+        function startMCQGame() {
+            document.getElementById('mcq-game').classList.add('active');
+            const container = document.getElementById('mcq-questions');
+            container.innerHTML = '';
+            mcqAnswers = {};
+
+            mcqQuestions.forEach((q, qIndex) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-container';
+                questionDiv.innerHTML = `
+                    <div class="quiz-question">${qIndex + 1}. ${q.question}</div>
+                    <div class="mcq-options">
+                        ${q.options.map((opt, optIndex) => `
+                            <div class="mcq-option" onclick="selectMCQAnswer(${qIndex}, ${optIndex})" data-q="${qIndex}" data-a="${optIndex}">
+                                ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(questionDiv);
+            });
+        }
+
+        function selectMCQAnswer(questionIndex, answerIndex) {
+            const options = document.querySelectorAll(`[data-q="${questionIndex}"]`);
+            options.forEach(opt => opt.classList.remove('selected'));
+            options[answerIndex].classList.add('selected');
+            mcqAnswers[questionIndex] = answerIndex;
+        }
+
+        function checkMCQAnswers() {
+            let correct = 0;
+            mcqQuestions.forEach((q, index) => {
+                if (mcqAnswers[index] === q.correct) {
+                    correct++;
+                    document.querySelectorAll(`[data-q="${index}"]`)[q.correct].classList.add('correct');
+                } else {
+                    if (mcqAnswers[index] !== undefined) {
+                        document.querySelectorAll(`[data-q="${index}"]`)[mcqAnswers[index]].classList.add('incorrect');
+                    }
+                    document.querySelectorAll(`[data-q="${index}"]`)[q.correct].classList.add('correct');
+                }
+            });
+
+            const result = document.getElementById('mcq-result');
+            const score = Math.round((correct / mcqQuestions.length) * 200);
+            if (correct === mcqQuestions.length) {
+                result.className = 'game-result correct';
+                result.innerHTML = `<i class="fas fa-check-circle"></i> Perfect! You got all questions right! +${score} XP`;
+            } else {
+                result.className = 'game-result';
+                result.style.background = 'rgba(255, 255, 0, 0.2)';
+                result.style.borderColor = '#ffff00';
+                result.style.color = '#ffff00';
+                result.innerHTML = `<i class="fas fa-info-circle"></i> You got ${correct}/${mcqQuestions.length} correct. +${score} XP`;
+            }
+            updatePoints(score);
+            updateProgress('mcq', Math.round((correct / mcqQuestions.length) * 100));
+            result.style.display = 'block';
+        }
+
+        function updateProgress(mission, percent) {
+            document.getElementById(`${mission}-progress`).style.width = `${percent}%`;
+            document.getElementById(`${mission}-status`).textContent = percent === 100 ? 'Completed' : `${percent}% Complete`;
+        }
+
+        function closeGame(gameId) {
+            document.getElementById(gameId).classList.remove('active');
+        }
+
+        loadUserData();
+    </script>
+</body>
+</html>
+
